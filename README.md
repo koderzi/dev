@@ -17,17 +17,12 @@ Universal GPU-accelerated dev container for all projects. Clone project repos in
 
 ## Quick Start
 
-1. **Clone this repo** and open in VS Code:
-   ```bash
-   git clone https://github.com/koderzi/dev.git
-   code dev
-   ```
+1. In VS Code, open Command Palette → **"Dev Containers: Clone Repository in Named Volume"**.
 
-2. **Reopen in Container** when prompted (or via Command Palette → "Dev Containers: Reopen in Container").
+2. Enter `https://github.com/koderzi/dev.git` and give it a name.
 
 3. **Clone your projects** into the workspace:
    ```bash
-   cd ~/workspace
    git clone https://github.com/koderzi/some-project.git
    cd some-project
    ```
@@ -89,7 +84,7 @@ chrome-devtools-mcp
 Each project folder gets its own `mise.toml` with isolated runtimes and virtual environments:
 
 ```
-workspace/
+(workspace root)/
 ├── project-a/          # Python 3.13 + .venv
 │   └── mise.toml
 ├── project-b/          # Node.js 22

@@ -16,6 +16,3 @@ __pycache__/
 *.pyc
 mise.toml
 .mise.toml
-
-# Workspace projects (cloned repos live here, don't track them)
-workspace/
