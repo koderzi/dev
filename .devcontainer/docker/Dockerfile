@@ -149,7 +149,4 @@ RUN mkdir -p /home/dev/.gemini \
 }
 GEMINI_EOF
 
-# =============================================================================
-# 11. Create workspace directory for cloning projects
-# =============================================================================
-RUN mkdir -p /home/dev/workspace
+
