@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Mise / Python / Node (project-level, not template-level)
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+mise.toml
+.mise.toml
+
+# Workspace projects (cloned repos live here, don't track them)
+workspace/

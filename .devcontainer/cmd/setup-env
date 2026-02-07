@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+echo ">>> Fixing workspace permissions..."
+sudo chown -R $(whoami) .
+
+echo ">>> Dev container is ready!"
+echo ""
+echo "  Tools available globally:"
+echo "    mise       — Runtime manager (Python, Node, Ruby, Go, etc.)"
+echo "    gemini     — Gemini CLI (Google AI)"
+echo "    claude     — Claude Code CLI (Anthropic AI)"
+echo "    chrome-devtools-mcp — Chrome DevTools MCP server"
+echo "    google-chrome       — Google Chrome browser"
+echo "    antigravity          — Google Antigravity"
+echo ""
+echo "  Quick start for a new project:"
+echo "    cd workspace"
+echo "    git clone <repo-url> my-project"
+echo "    cd my-project"
+echo "    mise use python@3.13    # or node@22, ruby@3.3, etc."
+echo ""
+echo ">>> Happy coding!"
