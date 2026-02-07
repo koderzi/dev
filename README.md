@@ -67,8 +67,7 @@ This template is configured with NVIDIA GPU passthrough by default (`--gpus all 
 
 ## Desktop GUI
 
-A virtual desktop is available via noVNC. It auto-opens in your browser when the container starts.
-The port is dynamically assigned (`0:6080`) so multiple containers won't conflict.
+A virtual desktop is available via noVNC on port 6080. It auto-opens in your browser when the container starts.
 
 ## AI Tools
 

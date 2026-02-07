@@ -17,12 +17,12 @@
     "features": {
         "ghcr.io/devcontainers/features/desktop-lite:1": {}
     },
-    // Dynamic host port → container 6080 (avoids conflicts with other containers)
+    // Port 6080 for noVNC desktop access
     "forwardPorts": [
-        "0:6080"
+        6080
     ],
     "portsAttributes": {
-        "0:6080": {
+        "6080": {
             "label": "Desktop GUI",
             "onAutoForward": "openBrowser"
         }
