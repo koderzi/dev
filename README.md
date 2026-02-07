@@ -17,17 +17,19 @@ Universal GPU-accelerated dev container for all projects. Clone project repos in
 
 ## Quick Start
 
-1. In VS Code, open Command Palette → **"Dev Containers: Clone Repository in Named Volume"**.
+1. **Use this repository as a template** on GitHub (click "Use this template" → "Create a new repository").
 
-2. Enter `https://github.com/koderzi/dev.git` and give it a name.
+2. In VS Code, open Command Palette → **"Dev Containers: Clone Repository in Named Container Volume..."**.
 
-3. **Clone your projects** into the workspace:
+3. Enter your new repository URL (e.g., `https://github.com/yourusername/dev.git`) and give it a name.
+
+4. **Clone your projects** into the workspace:
    ```bash
    git clone https://github.com/koderzi/some-project.git
    cd some-project
    ```
 
-4. **Set up the project's runtime** using mise:
+5. **Set up the project's runtime** using mise:
    ```bash
    # Python project
    mise use python@3.13
@@ -41,7 +43,7 @@ Universal GPU-accelerated dev container for all projects. Clone project repos in
    mise use python@3.13 node@22
    ```
 
-5. **Install project dependencies** as usual:
+6. **Install project dependencies** as usual:
    ```bash
    pip install -r requirements.txt   # Python
    npm install                        # Node.js
