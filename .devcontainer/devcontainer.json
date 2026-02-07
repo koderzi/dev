@@ -1,0 +1,44 @@
+{
+    "name": "dev",
+    "dockerFile": "docker/Dockerfile",
+
+    // ---------- GPU (NVIDIA by default, remove for non-GPU hosts) ----------
+    "runArgs": [
+        "--gpus",
+        "all",
+        "--runtime=nvidia",
+        "--security-opt",
+        "seccomp=unconfined"
+    ],
+
+    "remoteUser": "dev",
+
+    // ---------- Desktop GUI via desktop-lite (noVNC) ----------
+    "features": {
+        "ghcr.io/devcontainers/features/desktop-lite:1": {}
+    },
+    // Dynamic host port → container 6080 (avoids conflicts with other containers)
+    "forwardPorts": [
+        "0:6080"
+    ],
+    "portsAttributes": {
+        "0:6080": {
+            "label": "Desktop GUI",
+            "onAutoForward": "openBrowser"
+        }
+    },
+
+    // ---------- VS Code Customizations ----------
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "git.ignoreMissingGitWarning": true
+            }
+        }
+    },
+
+    "shutdownAction": "stopContainer",
+
+    // Post-create: fix permissions on workspace
+    "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/cmd/setup-env"
+}
