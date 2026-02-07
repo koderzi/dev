@@ -25,8 +25,8 @@ Universal GPU-accelerated dev container for all projects. Clone project repos in
 
 4. **Clone your projects** into the workspace:
    ```bash
-   git clone https://github.com/koderzi/some-project.git
-   cd some-project
+   git clone https://github.com/yourusername/your-project.git
+   cd your-project
    ```
 
 5. **Set up the project's runtime** using mise:
