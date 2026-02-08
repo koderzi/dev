@@ -13,42 +13,45 @@ LABEL description="Universal GPU dev container with AI tools, Antigravity, and m
 # Environment Configuration
 # =============================================================================
 ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=UTC \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8
+  TZ=UTC \
+  LANG=en_US.UTF-8 \
+  LANGUAGE=en_US:en \
+  LC_ALL=en_US.UTF-8
 
 # =============================================================================
 # 1. System Dependencies
 # =============================================================================
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # Core utilities
-    ca-certificates \
-    curl \
-    wget \
-    bash \
-    git \
-    gnupg \
-    sudo \
-    procps \
-    net-tools \
-    locales \
-    # Build essentials (for native npm packages, Python C extensions, etc.)
-    build-essential \
-    pkg-config \
-    python3-dev \
-    libicu-dev \
-    # Chrome dependencies
-    libglib2.0-dev \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libgtk-3-0 \
-    libgbm1 \
-    libasound2 \
-    && rm -rf /var/lib/apt/lists/*
+  # Core utilities
+  ca-certificates \
+  curl \
+  wget \
+  bash \
+  git \
+  gnupg \
+  sudo \
+  procps \
+  net-tools \
+  locales \
+  # Build essentials (for native npm packages, Python C extensions, etc.)
+  build-essential \
+  pkg-config \
+  python3-dev \
+  libicu-dev \
+  # Chrome dependencies
+  libglib2.0-dev \
+  libnss3 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  # GUI and IPC dependencies
+  dbus-x11 \
+  libx11-xcb1 \
+  libcups2 \
+  libdrm2 \
+  libgtk-3-0 \
+  libgbm1 \
+  libasound2 \
+  && rm -rf /var/lib/apt/lists/*
 
 # =============================================================================
 # 2. Locale Configuration
@@ -59,42 +62,42 @@ RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 # 3. Create 'dev' user with sudo access (UID 1000)
 # =============================================================================
 RUN groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid 1000 -m dev -s /bin/bash \
-    && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev \
-    && chmod 0440 /etc/sudoers.d/dev
+  && useradd --uid 1000 --gid 1000 -m dev -s /bin/bash \
+  && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev \
+  && chmod 0440 /etc/sudoers.d/dev
 
 # =============================================================================
 # 4. Install Google Chrome
 # =============================================================================
 RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
-        | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] \
-        https://dl.google.com/linux/chrome/deb/ stable main" \
-        > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
+  | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+  && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] \
+  https://dl.google.com/linux/chrome/deb/ stable main" \
+  > /etc/apt/sources.list.d/google-chrome.list \
+  && apt-get update \
+  && apt-get install -y google-chrome-stable \
+  && rm -rf /var/lib/apt/lists/*
 
 # =============================================================================
 # 5. Install Google Antigravity (via official APT repo)
 #    Reference: https://github.com/rawritude/antigravity-remote-docker
 # =============================================================================
 RUN mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg | \
-       gpg --dearmor --yes -o /etc/apt/keyrings/antigravity-repo-key.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/antigravity-repo-key.gpg] \
-       https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ \
-       antigravity-debian main" | \
-       tee /etc/apt/sources.list.d/antigravity.list > /dev/null \
-    && apt-get update \
-    && apt-get install -y antigravity \
-    && rm -rf /var/lib/apt/lists/*
+  && curl -fsSL https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg | \
+  gpg --dearmor --yes -o /etc/apt/keyrings/antigravity-repo-key.gpg \
+  && echo "deb [signed-by=/etc/apt/keyrings/antigravity-repo-key.gpg] \
+  https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ \
+  antigravity-debian main" | \
+  tee /etc/apt/sources.list.d/antigravity.list > /dev/null \
+  && apt-get update \
+  && apt-get install -y antigravity \
+  && rm -rf /var/lib/apt/lists/*
 
 # Configure Antigravity auto-updates
 RUN echo 'APT::Periodic::Update-Package-Lists "1";' > /etc/apt/apt.conf.d/20auto-upgrades \
-    && echo 'APT::Periodic::Unattended-Upgrade "1";' >> /etc/apt/apt.conf.d/20auto-upgrades \
-    && echo 'Unattended-Upgrade::Allowed-Origins { "antigravity-auto-updater-dev:antigravity-debian"; };' \
-       > /etc/apt/apt.conf.d/50unattended-upgrades
+  && echo 'APT::Periodic::Unattended-Upgrade "1";' >> /etc/apt/apt.conf.d/20auto-upgrades \
+  && echo 'Unattended-Upgrade::Allowed-Origins { "antigravity-auto-updater-dev:antigravity-debian"; };' \
+  > /etc/apt/apt.conf.d/50unattended-upgrades
 
 # =============================================================================
 # 6. Switch to dev user
@@ -120,33 +123,31 @@ RUN mise use --global node@22
 # 9. Install Global AI & Dev Tools via npm (using mise's node)
 # =============================================================================
 
-# Chrome DevTools MCP Server
-RUN mise exec -- npm install -g chrome-devtools-mcp
+# Claude Code (@anthropic-ai/claude-code)
+RUN mise exec -- npm install -g @anthropic-ai/claude-code
 
 # Gemini CLI (@google/gemini-cli)
 RUN mise exec -- npm install -g @google/gemini-cli
 
-# Claude Code (@anthropic-ai/claude-code)
-RUN mise exec -- npm install -g @anthropic-ai/claude-code
+# Chrome DevTools MCP Server
+RUN mise exec -- npm install -g chrome-devtools-mcp
 
 # =============================================================================
 # 10. Configure Gemini CLI with chrome-devtools-mcp (headless=false)
 # =============================================================================
 RUN mkdir -p /home/dev/.gemini \
-    && cat > /home/dev/.gemini/settings.json << 'GEMINI_EOF'
-{
-  "mcpServers": {
-    "chrome-devtools": {
-      "command": "chrome-devtools-mcp",
-      "args": [],
-      "env": {
-        "CHROME_PATH": "/usr/bin/google-chrome",
-        "HEADLESS": "false"
-      },
-      "trusted": true
-    }
-  }
-}
-GEMINI_EOF
+  && printf '{\n\
+  "mcpServers": {\n\
+  "chrome-devtools": {\n\
+  "command": "chrome-devtools-mcp",\n\
+  "args": [],\n\
+  "env": {\n\
+  "CHROME_PATH": "/usr/bin/google-chrome",\n\
+  "HEADLESS": "false"\n\
+  },\n\
+  "trusted": true\n\
+  }\n\
+  }\n\
+  }' > /home/dev/.gemini/settings.json
 
 

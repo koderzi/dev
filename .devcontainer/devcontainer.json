@@ -1,18 +1,18 @@
 {
     "name": "dev",
     "dockerFile": "docker/Dockerfile",
-
     // ---------- GPU (NVIDIA by default, remove for non-GPU hosts) ----------
     "runArgs": [
         "--gpus",
         "all",
         "--runtime=nvidia",
+        "--shm-size=2g",
+        "-e",
+        "NVIDIA_DRIVER_CAPABILITIES=all",
         "--security-opt",
         "seccomp=unconfined"
     ],
-
     "remoteUser": "dev",
-
     // ---------- Desktop GUI via desktop-lite (noVNC) ----------
     "features": {
         "ghcr.io/devcontainers/features/desktop-lite:1": {}
@@ -27,7 +27,6 @@
             "onAutoForward": "openBrowser"
         }
     },
-
     // ---------- VS Code Customizations ----------
     "customizations": {
         "vscode": {
@@ -36,9 +35,7 @@
             }
         }
     },
-
     "shutdownAction": "stopContainer",
-
     // Post-create: fix permissions on workspace
     "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/cmd/setup-env"
 }
