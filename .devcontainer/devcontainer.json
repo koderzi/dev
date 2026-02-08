@@ -36,6 +36,9 @@
         }
     },
     "shutdownAction": "stopContainer",
+    "containerEnv": {
+        "DONT_PROMPT_WSL_INSTALL": "1"
+    },
     // Post-create: fix permissions on workspace
     "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/cmd/setup-env"
 }
