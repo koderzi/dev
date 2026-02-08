@@ -16,7 +16,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
   TZ=UTC \
   LANG=en_US.UTF-8 \
   LANGUAGE=en_US:en \
-  LC_ALL=en_US.UTF-8
+  LC_ALL=en_US.UTF-8 \
+  DONT_PROMPT_WSL_INSTALL=1
 
 # =============================================================================
 # 1. System Dependencies
@@ -64,7 +65,9 @@ RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 RUN groupadd --gid 1000 dev \
   && useradd --uid 1000 --gid 1000 -m dev -s /bin/bash \
   && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev \
-  && chmod 0440 /etc/sudoers.d/dev
+  && chmod 0440 /etc/sudoers.d/dev \
+  && mkdir -p /home/dev/Desktop \
+  && chown dev:dev /home/dev/Desktop
 
 # =============================================================================
 # 4. Install Google Chrome
@@ -149,5 +152,31 @@ RUN mkdir -p /home/dev/.gemini \
   }\n\
   }\n\
   }' > /home/dev/.gemini/settings.json
+
+# =============================================================================
+# 11. Configure Fluxbox Menu
+# =============================================================================
+RUN mkdir -p /home/dev/.fluxbox && \
+    printf '[begin] (  Application Menu  )\n\
+    [exec] (File Manager) { nautilus ~ } <>\n\
+    [exec] (Text Editor) { mousepad } <>\n\
+    [exec] (Terminal) { tilix -w ~ -e $(readlink -f /proc/$$/exe) -il } <>\n\
+    [exec] (Web Browser) { x-www-browser --disable-dev-shm-usage } <>\n\
+    [exec] (Antigravity) { tilix -t "Antigravity" -e antigravity } <>\n\
+    [submenu] (System) {}\n\
+        [exec] (Set Resolution) { tilix -t "Set Resolution" -e bash /usr/local/bin/set-resolution } <>\n\
+        [exec] (Edit Application Menu) { mousepad ~/.fluxbox/menu } <>\n\
+        [exec] (Passwords and Keys) { seahorse } <>\n\
+        [exec] (Top Processes) { tilix -t "Top" -e htop } <>\n\
+        [exec] (Disk Utilization) { tilix -t "Disk Utilization" -e ncdu / } <>\n\
+        [exec] (Editres) {editres} <>\n\
+        [exec] (Xfontsel) {xfontsel} <>\n\
+        [exec] (Xkill) {xkill} <>\n\
+        [exec] (Xrefresh) {xrefresh} <>\n\
+    [end]\n\
+    [config] (Configuration)\n\
+    [workspaces] (Workspaces)\n\
+[end]' > /home/dev/.fluxbox/menu
+
 
 
